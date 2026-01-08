@@ -1,0 +1,76 @@
+DROP DATABASE IF EXISTS `The_Office`;
+CREATE DATABASE `The_Office`;
+USE `The_Office`;
+
+CREATE TABLE employee_demographics (
+  employee_id INT NOT NULL,
+  first_name VARCHAR(50),
+  last_name VARCHAR(50),
+  age INT,
+  gender VARCHAR(10),
+  birth_date DATE,
+  PRIMARY KEY (employee_id)
+);
+
+CREATE TABLE employee_salary (
+  employee_id INT NOT NULL,
+  first_name VARCHAR(50) NOT NULL,
+  last_name VARCHAR(50) NOT NULL,
+  occupation VARCHAR(80),
+  salary INT,
+  dept_id INT
+);
+
+INSERT INTO employee_demographics (employee_id, first_name, last_name, age, gender, birth_date)
+VALUES
+(1,  'Michael',  'Scott',        43, 'Male',   '1964-03-15'),
+(2,  'Dwight',   'Schrute',      35, 'Male',   '1972-01-20'),
+(3,  'Jim',      'Halpert',      29, 'Male',   '1978-10-01'),
+(4,  'Pam',      'Beesly',       28, 'Female', '1979-03-25'),
+(5,  'Stanley',  'Hudson',       49, 'Male',   '1958-02-19'),
+(6,  'Phyllis',  'Lapin',        45, 'Female', '1962-07-10'),
+(7,  'Kevin',    'Malone',       34, 'Male',   '1973-06-01'),
+(8,  'Angela',   'Martin',       32, 'Female', '1975-11-11'),
+(9,  'Oscar',    'Martinez',     36, 'Male',   '1971-11-15'),
+(10, 'Kelly',    'Kapoor',       27, 'Female', '1980-02-05'),
+(11, 'Toby',     'Flenderson',   41, 'Male',   '1966-02-22'),
+(12, 'Creed',    'Bratton',      55, 'Male',   '1952-11-01'),
+(13, 'Meredith', 'Palmer',       40, 'Female', '1967-06-20'),
+(14, 'Darryl',   'Philbin',      33, 'Male',   '1974-09-10'),
+(15, 'Ryan',     'Howard',       26, 'Male',   '1981-05-05');
+
+CREATE TABLE office_departments (
+  department_id INT NOT NULL AUTO_INCREMENT,
+  department_name VARCHAR(50) NOT NULL,
+  PRIMARY KEY (department_id)
+);
+
+INSERT INTO office_departments (department_name)
+VALUES
+('Management'),
+('Sales'),
+('Accounting'),
+('Human Resources'),
+('Reception'),
+('Warehouse'),
+('Customer Service'),
+('Corporate');
+
+INSERT INTO employee_salary (employee_id, first_name, last_name, occupation, salary, dept_id)
+VALUES
+(1,  'Michael',  'Scott',        'Regional Manager',                 82000, 1),
+(2,  'Dwight',   'Schrute',      'Assistant to the Regional Manager', 62000, 2),
+(3,  'Jim',      'Halpert',      'Sales Representative',             68000, 2),
+(4,  'Pam',      'Beesly',       'Receptionist',                     42000, 5),
+(5,  'Stanley',  'Hudson',       'Sales Representative',             64000, 2),
+(6,  'Phyllis',  'Lapin',        'Sales Representative',             61000, 2),
+(7,  'Kevin',    'Malone',       'Accountant',                       52000, 3),
+(8,  'Angela',   'Martin',       'Senior Accountant',                60000, 3),
+(9,  'Oscar',    'Martinez',     'Accountant',                       58000, 3),
+(10, 'Kelly',    'Kapoor',       'Customer Service Representative',  48000, 7),
+(11, 'Toby',     'Flenderson',   'HR Representative',                57000, 4),
+(12, 'Creed',    'Bratton',      'Quality Assurance',                54000, NULL),
+(13, 'Meredith', 'Palmer',       'Supplier Relations',               50000, 1),
+(14, 'Darryl',   'Philbin',      'Warehouse Foreman',                59000, 6),
+(15, 'Ryan',     'Howard',       'Temp',                             36000, 1),
+(16, 'David',    'Wallace',      'Chief Financial Officer',         150000, 8);
