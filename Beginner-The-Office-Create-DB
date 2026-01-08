@@ -21,6 +21,12 @@ CREATE TABLE employee_salary (
   dept_id INT
 );
 
+CREATE TABLE office_departments (
+  department_id INT NOT NULL AUTO_INCREMENT,
+  department_name VARCHAR(50) NOT NULL,
+  PRIMARY KEY (department_id)
+);
+
 INSERT INTO employee_demographics (employee_id, first_name, last_name, age, gender, birth_date)
 VALUES
 (1,  'Michael',  'Scott',        43, 'Male',   '1964-03-15'),
@@ -38,23 +44,6 @@ VALUES
 (13, 'Meredith', 'Palmer',       40, 'Female', '1967-06-20'),
 (14, 'Darryl',   'Philbin',      33, 'Male',   '1974-09-10'),
 (15, 'Ryan',     'Howard',       26, 'Male',   '1981-05-05');
-
-CREATE TABLE office_departments (
-  department_id INT NOT NULL AUTO_INCREMENT,
-  department_name VARCHAR(50) NOT NULL,
-  PRIMARY KEY (department_id)
-);
-
-INSERT INTO office_departments (department_name)
-VALUES
-('Management'),
-('Sales'),
-('Accounting'),
-('Human Resources'),
-('Reception'),
-('Warehouse'),
-('Customer Service'),
-('Corporate');
 
 INSERT INTO employee_salary (employee_id, first_name, last_name, occupation, salary, dept_id)
 VALUES
@@ -74,3 +63,14 @@ VALUES
 (14, 'Darryl',   'Philbin',      'Warehouse Foreman',                59000, 6),
 (15, 'Ryan',     'Howard',       'Temp',                             36000, 1),
 (16, 'David',    'Wallace',      'Chief Financial Officer',         150000, 8);
+
+INSERT INTO office_departments (department_name)
+VALUES
+('Management'),
+('Sales'),
+('Accounting'),
+('Human Resources'),
+('Reception'),
+('Warehouse'),
+('Customer Service'),
+('Corporate');
