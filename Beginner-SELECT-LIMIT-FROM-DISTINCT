@@ -1,0 +1,59 @@
+-- SELECT, FROM, LIMIT, DISTINCT statements in MySQL
+
+-- The SELECT statement is a command used to retrieve data from one or more tables in a relational database
+
+select 
+name, age, gender
+from healthcare_data
+limit 10;
+
+select 
+name, age, gender, `Medical Condition`
+from healthcare_data
+limit 10;
+
+select
+name, age, hospital
+from healthcare_data
+limit 10 offset 100;
+
+select distinct hospital
+from healthcare_data;
+
+select distinct 
+`Insurance Provider`
+from healthcare_data;
+
+select distinct 
+Hospital, `Insurance Provider`
+from healthcare_data;
+
+-- Q1: Pull Name, Hospital, and Doctor for 15 rows
+select
+name, hospital, doctor
+from healthcare_data
+limit 15;
+-- Q2: Show 25 rows of all columns
+select *
+from healthcare_data
+limit 25;
+-- Q3: List the unique genders in the table
+select distinct gender
+from healthcare_data;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
