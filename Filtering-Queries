@@ -1,0 +1,110 @@
+-- How to filter using WHERE, AND, OR, IN, BETWEEN, LIKE, NOT
+
+-- WHERE
+--Only show patients who are older than 50
+SELECT *
+FROM healthcare_data
+WHERE Age > 50;
+
+--Only show patients with a specific medical condition
+SELECT Name, Age, `Medical Condition`, Hospital
+FROM healthcare_data
+WHERE `Medical Condition` = 'Asthma';
+
+--Only show admissions for a specific hospital
+SELECT Name, Hospital, `Date of Admission`, `Admission Type`
+FROM healthcare_data
+WHERE Hospital = 'Northview Medical Center';
+
+
+-- AND and OR
+-- Patients older than 60 AND with Asthma
+SELECT Name, Age, `Medical Condition`
+FROM healthcare_data
+WHERE Age > 60
+  AND `Medical Condition` = 'Asthma';
+
+-- Patients who are either over 70 OR have a high billing amount
+SELECT Name, Age, `Billing Amount`
+FROM healthcare_data
+WHERE Age > 70
+   OR `Billing Amount` > 20000;
+
+-- Female patients who are either over 60 OR have Asthma
+SELECT Name, Age, Gender, `Medical Condition`
+FROM healthcare_data
+WHERE Gender = 'Female'
+  AND (Age > 60 OR `Medical Condition` = 'Asthma');
+
+
+-- IN
+--Only show patients with one of a few conditions
+SELECT Name, Age, `Medical Condition`
+FROM healthcare_data
+WHERE `Medical Condition` IN ('Asthma', 'Hypertension');
+
+--Show patients whose insurance provider is in a short list
+SELECT Name, `Insurance Provider`, `Billing Amount`
+FROM healthcare_data
+WHERE `Insurance Provider` IN ('Aetna', 'Blue Cross', 'UnitedHealthcare');
+
+
+-- BETWEEN
+--Patients between ages 25 and 40
+SELECT Name, Age
+FROM healthcare_data
+WHERE Age BETWEEN 25 AND 40;
+
+--Billing amounts in a range
+SELECT Name, `Billing Amount`, Hospital
+FROM healthcare_data
+WHERE `Billing Amount` BETWEEN 5000 AND 15000;
+
+
+-- LIKE
+--Names that start with “A”
+SELECT Name, Age
+FROM healthcare_data
+WHERE Name LIKE 'A%';
+
+--Names that end with “A”
+SELECT Name, Age
+FROM healthcare_data
+WHERE Name LIKE '%a';
+
+
+-- NOT
+-- Patients who are not Male
+SELECT Name, Gender
+FROM healthcare_data
+WHERE Gender <> 'Male';
+
+-- Patients whose condition is not in a list
+SELECT Name, `Medical Condition`
+FROM healthcare_data
+WHERE `Medical Condition` NOT IN ('Hypertension', 'Asthma');
+
+-- Billing amounts not in a certain range
+SELECT Name, `Billing Amount`
+FROM healthcare_data
+WHERE `Billing Amount` NOT BETWEEN 5000 AND 15000;
+
+-- Names that do not start with A
+SELECT Name, Age
+FROM healthcare_data
+WHERE Name NOT LIKE 'A%';
+
+
+-- Practice
+-- Female patients, age between 30 and 50, not admitted as Emergency, and condition is one of a list
+SELECT Name, Age, Gender, `Medical Condition`, `Admission Type`
+FROM healthcare_data
+WHERE Gender = 'Female'
+  AND Age BETWEEN 30 AND 50
+  AND `Admission Type` <> 'Emergency'
+  AND `Medical Condition` IN ('Hypertension', 'Diabetes', 'Asthma');
+
+
+
+
+
