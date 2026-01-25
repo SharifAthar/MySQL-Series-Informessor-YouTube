@@ -1,0 +1,68 @@
+-- GROUP BY and ORDER BY
+
+select * from healthcare_data
+
+-- ORDER BY
+
+-- Find me the 100 most expensive billing amounts by hospital
+select 
+Hospital, 
+`Billing Amount`
+from healthcare_data
+ORDER BY `Billing Amount` DESC
+LIMIT 100;
+
+-- Sort patients by hospital, then by billing amount within each hospital.
+select 
+name, 
+Hospital, 
+`Billing Amount`
+from healthcare_data
+ORDER BY hospital ASC, `Billing Amount` DESC;
+
+-- Give me a clean list of unique hospitals, sorted A to Z.
+select 
+DISTINCT Hospital
+from healthcare_data
+ORDER BY Hospital ASC
+LIMIT 50; 
+
+-- GROUP BY 
+-- Which medical conditions show up most often?
+select 
+`Medical Condition`,
+COUNT(*)
+from healthcare_data
+GROUP BY `Medical Condition`
+LIMIT 100; 
+
+-- How many unique doctors are associated with each hospital?
+select 
+Hospital, 
+COUNT(DISTINCT Doctor)
+from healthcare_data
+GROUP BY Hospital
+LIMIT 50; 
+
+-- For each insurance provider, how many unique patients do we have?
+select 
+`Insurance Provider`,
+COUNT(DISTINCT Name)
+from healthcare_data
+GROUP BY `Insurance Provider`
+LIMIT 50;
+
+
+-- PRACTICE!
+-- Show me the top 5 hospitals with the most unique patients, but only for Emergency admissions, and only for patients age 50 or older. Sort it so the hospital with the most unique patients is on top.
+
+select 
+Hospital, 
+COUNT(DISTINCT Name) AS unique_patient_50_plus
+from healthcare_data
+WHERE `Admission Type` = 'Emergency'
+AND Age >= 50
+GROUP BY hospital
+ORDER BY unique_patient_50_plus DESC
+LIMIT 5; 
+
