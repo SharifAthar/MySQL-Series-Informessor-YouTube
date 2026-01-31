@@ -1,0 +1,107 @@
+-- Aggregate Functions in SQL 
+-- COUNT, SUM, AVG, MIN, MAX
+
+select
+hospital,
+count(*)
+ from healthcare_data
+ group by hospital;
+ 
+ select * from healthcare_data
+
+-- COUNT
+-- Count total patients
+ select 
+ count(name)
+ from healthcare_data;
+
+-- Count patients by admission type
+select
+ `admission type`,
+ count(*)
+ from healthcare_data
+ group by `admission type`;
+ 
+ 
+-- SUM
+-- Tip: SUM only works on numeric data types
+-- Total billing amount across all records
+select
+sum(`Billing Amount`)
+ from healthcare_data;
+-- Total billing by Insurance Provider
+select
+`Insurance Provider`,
+sum(`Billing Amount`)
+ from healthcare_data
+ group by `Insurance Provider`;
+ 
+ -- AVG
+-- Tip: AVG ignores null values
+-- Average billing amount overall
+select
+avg(`Billing Amount`)
+ from healthcare_data;
+-- Average age by medical condition 
+select
+`Medical Condition`,
+avg(`Billing Amount`)
+ from healthcare_data
+ group by `Medical Condition`;
+ 
+ -- MIN 
+-- Tip: MIN is great for things like the lowest bill, youngest patient, earliest date, and so on.
+-- Lowest billing amount
+select
+min(`Billing Amount`)
+ from healthcare_data;
+-- Youngest patient by gender
+select 
+gender, 
+min(age)
+ from healthcare_data
+ group by gender; 
+ 
+ 
+ -- MAX
+-- Which patient had the highest billing amount
+select
+name,
+max(`Billing Amount`)
+ from healthcare_data
+ group by name
+ limit 1;
+-- Oldest patient by hospital
+select
+hospital,
+max(`age`)
+ from healthcare_data
+ group by hospital; 
+ 
+ -- BONUS!!!
+ -- COUNT DISTINCT 
+-- Number of unique hospitals
+select 
+count(distinct hospital)
+ from healthcare_data;
+-- Unique doctors per hospital
+select 
+hospital,
+count(distinct doctor)
+ from healthcare_data
+ group by hospital; 
+ 
+ 
+ -- RECAP 
+-- 1. If you mix an aggregate function with a normal column, use GROUP BY on the normal column
+-- 2. WHERE filters rows before aggregation
+-- 3. HAVING filters groups after aggregation
+-- 4. COUNT(*) counts rows, COUNT(column) counts non null values
+-- 5. SUM and AVG are for numeric columns
+
+ 
+ 
+ 
+ 
+ 
+ 
