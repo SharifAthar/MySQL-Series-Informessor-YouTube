@@ -1,0 +1,43 @@
+-- HAVING clause + Aliasing
+-- How HAVING is different from WHERE clause
+
+select * from healthcare_data
+
+-- Find hospitals that have more than 10 admissions
+select 
+Hospital,
+COUNT(*) as total_admissions
+from healthcare_data
+group by hospital
+HAVING COUNT(*) > 10
+ORDER BY total_admissions DESC;
+
+-- Insurance providers whose average billing amount is above 10,000
+select 
+`Insurance Provider`,
+ROUND(AVG(`Billing Amount`), 2) as avg_billing
+from healthcare_data
+group by `Insurance Provider`
+HAVING AVG(`Billing Amount`) > 10000
+ORDER BY avg_billing DESC;
+
+-- For each medical condition, show the average billing and keep only conditions with at least 5 patients, then filter to adults only using WHERE
+
+select 
+`Medical Condition`,
+COUNT(*) as patient_count,
+ROUND(AVG(`Billing Amount`), 2) as avg_billing
+from healthcare_data
+WHERE Age >= 18
+group by `Medical Condition`
+HAVING COUNT(*) >= 5
+ORDER BY avg_billing DESC;
+
+
+
+
+
+
+
+
+
