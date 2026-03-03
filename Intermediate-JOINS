@@ -1,0 +1,99 @@
+select * from encounters
+-- contains patient_id and hospital_id as foreign keys
+
+select * from hospitals
+-- hospital_id is the primary key
+
+select * from patients
+-- patient_id is the primary key
+
+-- INNER JOIN
+select 
+e.encounter_id,
+p.payer
+ from encounters as e
+join patients as p
+ON e.patient_id = p.patient_id;
+
+-- LEFT JOIN
+select 
+p.patient_id,
+p.age_years,
+e.encounter_id,
+p.payer
+ from patients as p
+left join encounters as e
+ON p.patient_id = e.patient_id
+WHERE e.encounter_id IS NULL; 
+
+-- RIGHT JOIN
+select 
+p.patient_id,
+p.age_years,
+e.encounter_id,
+p.payer
+ from patients as p
+right join encounters as e
+ON p.patient_id = e.patient_id;
+
+-- FULL OUTER JOIN aka FULL JOIN 
+
+select
+  p.patient_id,
+  e.encounter_id
+from patients p
+left join encounters e
+  ON p.patient_id = e.patient_id
+
+UNION
+
+select
+  p.patient_id,
+  e.encounter_id
+from patients p
+right join encounters e
+  ON p.patient_id = e.patient_id;
+
+-- CROSS JOIN
+select distinct
+h.hospital_type,
+p.payer
+from hospitals as h
+cross join patients as p
+
+-- SELF JOIN
+select
+  p1.patient_id  AS patient_1,
+  p2.patient_id  AS patient_2,
+  p1.zip3
+from patients as p1
+join patients as p2
+  ON p1.zip3 = p2.zip3
+  and p1.patient_id < p2.patient_id;
+  
+-- JOINING ALL 3 TABLES
+select
+	e.encounter_id, 
+    p.patient_id, 
+    h.state
+from encounters as e
+join patients as p
+	ON e.patient_id = p.patient_id
+join hospitals as h
+	ON e.hospital_id = h.hospital_id;
+
+-- FINISHED!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
