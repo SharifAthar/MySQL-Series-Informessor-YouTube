@@ -1,0 +1,57 @@
+select * from encounters
+select * from hospitals
+select * from patients
+
+-- UNIONS
+
+-- Example 1: List of patients who have either Medicare or Medicaid
+select
+patient_id,
+payer,
+age_years
+from patients
+where payer = 'Medicare'
+UNION
+select
+patient_id,
+payer,
+age_years
+from patients
+where payer = 'Medicaid'
+
+-- Example 2: Hospitals that are Teaching, and Hospitals that have 300 or more beds
+select
+hospital_id,
+hospital_name, 
+city,
+state
+from hospitals 
+where teaching_status = '1'
+UNION
+select
+hospital_id,
+hospital_name, 
+city,
+state
+from hospitals 
+where bed_count >= 300
+
+-- Example 3: Patients who are Smokers, and Patients who have CKD
+select
+patient_id,
+smoker,
+ckd
+from patients
+where smoker = 1
+UNION ALL
+select
+patient_id,
+smoker,
+ckd
+from patients
+where ckd = 1
+
+
+
+
+
