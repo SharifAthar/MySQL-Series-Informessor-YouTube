@@ -1,0 +1,74 @@
+-- STRING FUNCTIONS!
+
+-- UPPER(), LOWER(), UCASE(), LCASE()
+select
+hospital_name,
+UPPER(hospital_name)
+from hospitals;
+
+select
+city,
+LOWER(city)
+from hospitals;
+
+select
+UCASE(hospital_name),
+LCASE(city)
+from hospitals;
+
+-- LENGTH(), CHAR_LENGTH() aka CHARACTER_LENGTH()
+select
+city,
+LENGTH(city) as byte_length
+from hospitals; 
+
+select
+city,
+CHAR_LENGTH(city) as char_count
+from hospitals; 
+
+-- CONCAT()
+select
+city,
+state,
+CONCAT(city, ' - ', state) as city_state
+from hospitals;
+
+-- LEFT(), RIGHT(), SUBSTRING()
+select
+hospital_name,
+LEFT(hospital_name, 11)
+from hospitals;
+
+select
+hospital_name,
+RIGHT(hospital_name, 2)
+from hospitals;
+
+select
+hospital_name,
+SUBSTRING(hospital_name, 13, 7)
+from hospitals;
+
+-- TRIM(), LTRIM(), RTRIM()
+select TRIM('      Medicaid     ')
+select LTRIM('      Medicaid     ')
+select RTRIM('      Medicaid     ')
+
+-- REPLACE()
+select
+hospital_name,
+REPLACE(hospital_name, 'Medical Center', 'Med Center') as short_name
+from hospitals;
+
+-- LOCATE()
+select
+hospital_name,
+LOCATE('Medical', hospital_name)
+from hospitals;
+
+
+
+
+
+
