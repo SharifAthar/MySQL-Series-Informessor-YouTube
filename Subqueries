@@ -1,0 +1,39 @@
+-- Subqueries
+
+-- Example 1: Patients with a risk score above the overall average
+SELECT
+	patient_id,
+    age_years,
+    payer,
+    risk_score
+from patients
+WHERE risk_score > (select AVG(risk_score) from patients);
+
+-- Example 2: Patients who are smokers and have a risk score above the average smoker risk score
+select 
+	patient_id,
+    smoker,
+    risk_score,
+    ckd,
+    copd
+from patients
+where smoker = 1
+AND risk_score > (SELECT avg(risk_score) from patients 
+WHERE smoker = 1);
+
+-- Example 3: Patients whose payer belongs to the group of payers with average risk score above 5
+SELECT 
+	patient_id,
+    payer,
+    risk_score,
+    age_years
+FROM patients
+WHERE payer IN (
+SELECT payer
+FROM patients
+GROUP BY payer
+HAVING AVG(risk_score) > 5);
+
+
+
+
