@@ -1,0 +1,153 @@
+-- WINDOW FUNCTIONS
+
+-- 1. ROW_NUMBER()
+select 
+	patient_id,
+    payer,
+    age_years,
+    risk_score,
+    ROW_NUMBER() OVER(
+    PARTITION BY payer
+    ORDER BY risk_score desc) as payer_risk
+from patients;
+
+-- 2. RANK()
+select
+patient_id,
+payer,
+risk_score,
+RANK() OVER(
+PARTITION BY payer 
+order by risk_score desc
+) as payer_risk_rank
+from patients;
+
+-- 3. DENSE_RANK()
+select
+	patient_id,
+    payer,
+    risk_score,
+    DENSE_RANK() OVER(
+    PARTITION BY PAYER
+    ORDER BY risk_score DESC
+) as payer_risk_denserank
+from patients;
+
+-- 4. AVG() OVER()
+select
+	patient_id,
+    payer,
+    risk_score,
+    AVG(risk_score) OVER(
+    PARTITION BY payer
+    ) as avg_risk_by_payer
+from patients; 
+
+-- 5. Comparing a Patient to Their Group Average
+select
+	patient_id,
+    payer,
+    risk_score,
+    AVG(risk_score) OVER(
+    PARTITION BY payer
+    ) as avg_risk_by_payer,
+    risk_score - AVG(risk_score) OVER(
+    PARTITION BY payer) as difference_payer_avg
+from patients; 
+
+-- 6. SUM() OVER() for a Running Total
+select
+	patient_id,
+    payer,
+	risk_score,
+	SUM(risk_score) OVER(
+    PARTITION BY payer
+    ORDER BY risk_score desc)
+    as running_total
+from patients;
+
+-- 7. LAG()
+select
+	patient_id,
+    payer,
+	risk_score,
+	LAG(risk_score) OVER(
+    PARTITION BY payer
+    ORDER BY risk_score desc)
+    as previous_risk_score
+from patients;
+
+-- 8. LAG() to Calculate the Difference From Previous Row
+select
+	patient_id,
+    payer,
+	risk_score,
+	LAG(risk_score) OVER(
+    PARTITION BY payer
+    ORDER BY risk_score desc)
+    as previous_risk_score,
+    risk_score - LAG(risk_score) OVER (
+        PARTITION BY payer
+        ORDER BY risk_score DESC
+    ) as the_difference
+from patients;
+
+-- 9. LEAD()
+select
+	patient_id,
+    payer,
+    risk_score,
+    LEAD(risk_score) OVER(
+    PARTITION BY payer
+    ORDER BY risk_score desc
+    ) as next_risk_score
+from patients;    
+
+-- 10. NTILE()
+select
+	patient_id,
+    payer,
+    risk_score,
+	NTILE(4) OVER (
+    PARTITION BY payer
+    ORDER BY risk_score desc
+    ) as risk_ntile_score
+from patients;  
+
+-- 11. FIRST_VALUE()
+select
+	patient_id,
+    payer,
+    risk_score,
+	FIRST_VALUE(risk_score) OVER(
+    PARTITION BY payer
+    ORDER BY risk_score desc
+    ) as highest_risk_payer
+from patients;  
+
+-- 12. LAST_VALUE() 
+select
+	patient_id,
+    payer,
+    risk_score,
+	LAST_VALUE(risk_score) OVER(
+    PARTITION BY payer
+    ORDER BY risk_score desc
+    ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+    ) as lowest_risk_payer
+from patients;  
+
+-- 13. Bonus
+SELECT
+    patient_id,
+    payer,
+    risk_score,
+	PERCENT_RANK() OVER(
+    PARTITION BY payer
+    ORDER BY risk_score
+    ) as percent_rank_payer
+FROM patients;
+
+-- FINISHED!
+
+
