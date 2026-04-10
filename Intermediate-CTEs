@@ -1,0 +1,102 @@
+-- CTE
+
+-- Introducing a basic syntax
+WITH patient_overview AS (
+	SELECT
+		patient_id,
+        age_years,
+        payer,
+        risk_score
+	FROM patients
+)
+SELECT * FROM patient_overview
+
+-- Advanced Calculations Inside a CTE
+
+WITH patient_stats AS (
+	SELECT
+		AVG(age_years) as avg_age,
+        MAX(risk_score) as max_risk_score,
+		MIN(risk_score) as min_risk_score,
+        COUNT(*) AS total_patients
+	FROM patients
+)
+SELECT * FROM patient_stats
+
+-- Healthcare-Focused Example
+
+WITH payer_summary AS (
+	SELECT
+		payer,
+        COUNT(*) as patient_count,
+        AVG(age_years) as avg_age,
+        AVG(risk_score) as avg_risk_score
+        FROM patients
+        GROUP BY payer
+	)
+SELECT * from payer_summary 
+ORDER BY avg_risk_score desc; 
+
+-- CTEs vs Subqueries
+-- below is a CTE
+WITH payer_summary AS (
+    SELECT
+        payer,
+        COUNT(*) AS patient_count,
+        AVG(risk_score) AS avg_risk_score
+    FROM patients
+    GROUP BY payer
+)
+SELECT *
+FROM payer_summary
+WHERE avg_risk_score > 5;
+
+-- below is a subquery
+select * from
+(SELECT
+        payer,
+        COUNT(*) AS patient_count,
+        AVG(risk_score) AS avg_risk_score
+    FROM patients
+    GROUP BY payer
+) as payer_summary
+WHERE avg_risk_score > 5; 
+
+select * from payer_summary
+
+-- Multiple CTEs in One Statement
+WITH diabetes_summary AS (
+	SELECT 
+		payer,
+        COUNT(*) AS diabetes_patients,
+        AVG(risk_score) AS diabetes_avg_risk
+	FROM PATIENTS 
+    where diabetes = 1
+    group by payer
+), 
+ckd_summary as (
+	SELECT 
+		payer,
+        COUNT(*) AS ckd_patients,
+        AVG(risk_score) AS ckd_avg_risk
+	FROM PATIENTS 
+    where ckd = 1
+    group by payer
+    )
+select 
+	d.payer,
+    d.diabetes_patients,
+    d.diabetes_avg_risk,
+	c.ckd_patients,
+	c.ckd_avg_risk
+from diabetes_summary as d
+join ckd_summary as c
+	on d.payer = c.payer
+ORDER BY d.payer;
+
+-- FINISHED!
+
+
+
+
+
