@@ -1,0 +1,93 @@
+-- CASE WHEN STATEMENT
+
+-- Query 1: Labeling encounter types in a clean way
+SELECT
+	encounter_id, 
+    patient_id, 
+    encounter_type,
+	CASE encounter_type
+    WHEN 'ED' THEN 'Emergency Department Visit'
+    WHEN 'Inpatient' THEN 'Inpatient Stay'
+    WHEN 'Observation' THEN 'Observation Stay'
+    ELSE 'Other Encounter Type'
+    END AS encounter_type_label
+FROM ENCOUNTERS
+LIMIT 20;
+
+-- Query 2: Categorizing patients by age group and risk score
+SELECT
+	patient_id, 
+    age_years, 
+    risk_score,
+	CASE
+		WHEN age_years >= 65 AND risk_score >= 7 THEN 'Older High Risk Patients'
+        WHEN age_years >= 65 AND risk_score < 7 THEN 'Older Lower Risk Patients'
+        WHEN age_years < 65 AND risk_score >= 7 THEN 'Younger High Risk Patients'
+        ELSE 'Younger Lower Risk Patients'
+	END AS patient_risk_category
+FROM PATIENTS
+ORDER BY risk_score DESC;
+
+-- Query 3: Creating a flag for patients
+SELECT
+	patient_id, 
+    diabetes, 
+    ckd, 
+    copd,
+    smoker, 
+    CASE
+		WHEN diabetes = 1 OR ckd = 1 OR copd = 1 THEN 1
+        ELSE 0
+	END AS chronic_flag, 
+    CASE
+		WHEN smoker = 1 AND (diabetes = 1 OR ckd = 1 OR copd = 1) THEN 1
+        ELSE 0 
+	END AS smoker_with_chronic_flag
+FROM PATIENTS
+
+-- Query 4: Bucketing patients into low, medium, and high risk
+SELECT 
+	patient_id, 
+    age_years, 
+    risk_score, 
+    CASE
+		WHEN risk_score >= 8 THEN 'Very High Risk'
+        WHEN risk_score >= 6 THEN 'High Risk'
+        WHEN risk_score >= 3 THEN 'Moderate Risk'
+        ELSE 'Low Risk'
+	END AS risk_level_score
+FROM patients
+ORDER BY risk_score DESC
+
+-- Query 5: Calculating the percent of encounters that were readmissions
+SELECT
+	encounter_type, 
+    COUNT(*) as total_encounters,
+    SUM(CASE
+			WHEN readmit_30d = 1 THEN 1
+            ELSE 0 
+		END) as readmit_count, 
+        ROUND (SUM(CASE
+			WHEN readmit_30d = 1 THEN 1
+            ELSE 0 
+		END) / COUNT(*) * 100, 2) as readmit_rate_percent
+FROM encounters
+GROUP BY encounter_type
+ORDER BY readmit_rate_percent desc; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
