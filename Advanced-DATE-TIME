@@ -1,0 +1,119 @@
+-- DATE & TIME FUNCTIONS
+
+-- Query 1: View the raw datetime columns
+SELECT
+	encounter_id, 
+    patient_id, 
+    admit_datetime,
+    discharge_datetime
+FROM encounters
+LIMIT 20; 
+
+-- Query 2: Extract year, month, day, and quarter
+SELECT
+	encounter_id, 
+    patient_id, 
+    admit_datetime,
+    YEAR(admit_datetime) AS admit_year,
+	MONTH(admit_datetime) AS admit_month,
+	DAY(admit_datetime) AS admit_day,
+    QUARTER(admit_datetime) AS admit_quarter
+FROM encounters
+LIMIT 10;
+
+-- Query 3: Group encounters by year and month
+SELECT
+	YEAR(admit_datetime) AS admit_year,
+	MONTH(admit_datetime) AS admit_month,
+    COUNT(*) as total_encounters
+FROM encounters
+GROUP BY
+	YEAR(admit_datetime),
+	MONTH(admit_datetime)
+ORDER BY
+	admit_year,
+    admit_month;
+    
+-- Query 4: Format dates into cleaner reporting labels
+SELECT 
+	DATE_FORMAT(admit_datetime, '%Y-%m') admit_month, 
+    COUNT(*) as total_encounters
+FROM encounters
+	GROUP BY DATE_FORMAT(admit_datetime, '%Y-%m')
+    ORDER BY admit_month;
+
+-- Query 5: Calculate length of stay using DATEDIFF
+SELECT
+	encounter_id, 
+    admit_datetime, 
+    discharge_datetime, 
+    DATEDIFF(discharge_datetime, admit_datetime) as diff,
+    los_days
+FROM encounters;
+
+-- Query 6: TIMESTAMPDIFF (calculating hours)
+SELECT
+	encounter_id, 
+    admit_datetime, 
+    discharge_datetime,
+    TIMESTAMPDIFF(HOUR, admit_datetime, discharge_datetime)
+    as hours_diff
+FROM encounters
+WHERE encounter_type = 'ED';
+
+-- Query 7: Extracting the hour of admission
+SELECT 
+	HOUR(admit_datetime) as admit_hour,
+    COUNT(*) as total_encounters
+FROM encounters
+GROUP BY HOUR(admit_datetime)
+ORDER BY admit_hour;
+
+-- Query 8: Show admissions by day name
+SELECT
+	DAYNAME(admit_datetime) as admission_day,
+    COUNT(*) as total_encounters
+FROM encounters
+GROUP BY DAYNAME(admit_datetime), DAYOFWEEK(admit_datetime)
+ORDER BY DAYOFWEEK(admit_datetime);
+
+-- Query 9: DATE_ADD to estimate a 30-day readmission window
+SELECT
+	encounter_id, 
+    patient_id, 
+    discharge_datetime, 
+    DATE_ADD(discharge_datetime, INTERVAL 30 day) 
+    as readmit_window
+FROM encounters
+ORDER BY discharge_datetime desc;
+
+-- Query 10: Use current date and current timestamp
+SELECT 
+	CURDATE() AS current_date_only, 
+    NOW() AS current_date_and_time, 
+    CURRENT_TIMESTAMP() AS current_timestamp_value;
+
+-- Query 11: Pulling date & time only
+SELECT 
+	encounter_id, 
+    admit_datetime, 
+    DATE(admit_datetime) as admit_date_only, 
+	TIME(admit_datetime) as admit_time_only 
+FROM encounters;
+
+-- Query 12: LAST_DAY to find end of the month
+SELECT
+	encounter_id, 
+    admit_datetime, 
+    LAST_DAY(admit_datetime) as month_end_date
+FROM encounters;
+
+
+
+
+
+
+
+
+
+
