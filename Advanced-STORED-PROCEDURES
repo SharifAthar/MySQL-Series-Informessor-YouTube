@@ -1,0 +1,78 @@
+-- Stored Procedures
+
+-- Query 1: Creating a simple stored procedure
+CREATE PROCEDURE show_age_patients()
+SELECT
+age_years
+FROM PATIENTS
+CALL show_age_patients()
+
+-- Query 2: Patient risk score
+CREATE PROCEDURE higher_risk_patients()
+SELECT
+	patient_id, 
+    age_years, 
+    race_ethnicity, 
+    payer, 
+    risk_score
+FROM PATIENTS
+WHERE risk_score >= 3.5
+
+CALL higher_risk_patients()
+
+-- Query 3: Stored procedure with an input
+CREATE PROCEDURE find_patient_by_id(patient_number INT)
+SELECT
+	patient_id, 
+    age_years, 
+    payer, 
+    risk_score
+FROM PATIENTS
+WHERE patient_id = patient_number
+
+CALL find_patient_by_id(100002);
+
+-- Query 4: Stored procedure with a join
+CREATE PROCEDURE patient_encounters(patient_number INT)
+SELECT
+	p.patient_id, 
+    p.age_years, 
+    e.encounter_id,
+    e.los_days, 
+    e.cost_usd
+from patients as p
+JOIN encounters as e
+	ON p.patient_id = e.patient_id
+WHERE p.patient_id = patient_number
+
+CALL patient_encounters(100001);
+
+-- Query 5: Stored procedure for hospital encounters
+CREATE PROCEDURE hospital_encounter(hospital_number INT)
+SELECT
+	h.hospital_name, 
+    h.state, 
+    COUNT(e.encounter_id) as total_encounters
+FROM hospitals as h
+JOIN encounters as e
+	on h.hospital_id = e.hospital_id
+WHERE h.hospital_id = hospital_number
+GROUP BY 
+	h.hospital_name, 
+    h.state;
+CALL hospital_encounter(1);
+
+-- Query 6: Dropping a stored procedure
+DROP PROCEDURE hospital_encounter
+
+CALL hospital_encounter
+
+
+
+
+
+
+
+
+
+
