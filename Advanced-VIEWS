@@ -1,0 +1,75 @@
+-- VIEWS
+
+-- Query 1: Creating a Simple View
+CREATE VIEW high_risk_patients AS
+SELECT
+	patient_id, 
+    age_years, 
+    payer, 
+    risk_score, 
+    diabetes, 
+    ckd,
+    copd
+FROM patients
+WHERE risk_score >= 3.0;
+
+-- Query 2: Creating a View with a Join
+CREATE VIEW encounter_patient_summary AS
+SELECT
+	e.encounter_id, 
+    e.patient_id, 
+    e.service_line, 
+    e.encounter_type, 
+    e.los_days, 
+    e.cost_usd, 
+    e.readmit_30d,
+    p.payer, 
+    p.risk_score, 
+    p.age_years
+FROM encounters as e
+JOIN patients as p
+	ON e.patient_id = p.patient_id;
+    
+-- Query 3: Creating an Aggregated View
+CREATE VIEW service_line_summary AS
+SELECT
+	service_line, 
+    COUNT(encounter_id) AS total_encounters, 
+    ROUND(AVG(los_days), 2) AS avg_los, 
+    ROUND(AVG(cost_usd), 2) AS avg_cost, 
+    SUM(readmit_30d) as total_readmit
+FROM encounters
+GROUP BY service_line;
+
+-- Query 4: Replacing a View
+CREATE OR REPLACE VIEW high_risk_patients AS
+SELECT
+	patient_id, 
+    age_years, 
+    payer, 
+    risk_score, 
+    smoker, 
+    diabetes, 
+    ckd,
+    copd
+FROM patients
+WHERE risk_score >= 3.0
+	OR diabetes = 1
+    OR ckd = 1;
+
+-- Query 5: Dropping a View
+DROP VIEW IF EXISTS high_risk_patients;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
